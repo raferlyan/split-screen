@@ -7,7 +7,6 @@ import static android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 import static android.view.WindowManager.LayoutParams.TYPE_NAVIGATION_BAR;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.hardware.input.InputManager;
 import android.hardware.input.InputManagerGlobal;
@@ -52,7 +51,7 @@ public class NavigationBar {
         mView = new LinearLayout(mContext);
         mView.setOrientation(LinearLayout.HORIZONTAL);
         mView.setGravity(Gravity.CENTER);
-        mView.setBackgroundColor(Color.BLACK);
+        mView.setBackgroundColor(mContext.getColor(R.color.sys_canvas));
         mView.addView(button(R.drawable.ic_nav_back, "返回",
                 v -> injectKey(KeyEvent.KEYCODE_BACK)));
         mView.addView(button(R.drawable.ic_nav_home, "主页",

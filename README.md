@@ -18,6 +18,7 @@
 | `app/.../split/SplitCoordinator.java` | 分屏状态机 |
 | `app/.../split/AppPickerPanel.java` | 右侧应用列表 |
 | `app/.../split/SplitExitOverlay.java` | 退出时的快照卡片 |
+| `app/.../split/SplitDividerCorner.java` + `res/layout/split_divider.xml` | 分隔条两侧的圆角（覆盖 WMShell 的布局） |
 | `device/privapp-permissions-com.split.systemui.xml` | priv-app 权限白名单 |
 | `scripts/export_on_server.sh` | 编译服务器上收集产物 |
 | `scripts/fetch_from_server.sh` | 拉回 Mac 并生成平台签名 |
@@ -50,6 +51,8 @@ scripts/deploy_emulator.sh
 | 分屏时 `PipTaskOrganizer` 空指针 | Dagger 按需创建，PiP 控制器没被取过就不会初始化 | 和 `SystemUIInitializer` 一样，先把 WMComponent 的各个 getter 取一遍再 `onInit()` |
 | 偶发 `StageCoordinator` 空指针 | `ShellInterface#onInit` 只是 post，不等初始化完成 | 注册分屏监听也 post 到 wmshell.main |
 | Toast 不显示 | Android 11 起文字 Toast 由 SystemUI 通过 IStatusBar 绘制 | 自己画提示浮层 |
+| 分屏被全屏应用盖住后点分屏，弹出空白卡片 | `onSplitVisibilityChanged(false)` 不一定回调 | 点按钮时再核对前台 task 是否属于分屏 |
+| 分隔条是一根直角黑条 | `DividerRoundedCorner` 用屏幕圆角半径，屏幕圆角为 0 就不画 | app 里覆盖 `split_divider` 布局，换成固定半径的子类；颜色/粗细/把手用同名资源覆盖 |
 | WMShell 和 UI 抢主线程 | `config_enableShellMainThread` 默认 false | app 资源里覆盖成 true，WMShell 跑在 `wmshell.main` |
 
 ## 性能参考（模拟器，M1 Pro，仅供对比）

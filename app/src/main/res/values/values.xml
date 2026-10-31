@@ -13,6 +13,18 @@
     <dimen name="card_gap">32dp</dimen>
     <dimen name="card_radius">16dp</dimen>
 
+    <!--
+      分屏分隔条，覆盖 WMShell 同名资源。
+      底色和导航栏同一个深灰（不用纯黑），两侧应用画 16dp 圆角，把手是半透明白色短胶囊。
+    -->
+    <color name="sys_canvas">#FF1F1F23</color>
+    <color name="split_divider_background">@color/sys_canvas</color>
+    <color name="docked_divider_handle">#8CFFFFFF</color>
+    <dimen name="split_divider_bar_width">12dp</dimen>
+    <dimen name="split_corner_radius">16dp</dimen>
+    <dimen name="split_divider_handle_width">40dp</dimen>
+    <dimen name="split_divider_handle_height">4dp</dimen>
+
     <color name="exit_scrim">#B3000000</color>
     <color name="picker_scrim">#66000000</color>
     <color name="picker_bg">#F2202124</color>

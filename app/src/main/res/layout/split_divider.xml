@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  覆盖 WMShell 的 layout/split_divider.xml（app 资源优先于库资源）。
+  和原版只差一处：圆角换成 SplitDividerCorner，用固定半径而不是屏幕圆角。
+  三个 id 必须保留，DividerView#onFinishInflate 按 id 查找。
+-->
+<com.android.wm.shell.common.split.DividerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <FrameLayout
+        android:id="@+id/divider_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.android.wm.shell.common.split.DividerHandleView
+            android:id="@+id/docked_divider_handle"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/accessibility_divider"
+            android:background="@null"/>
+
+        <com.split.systemui.split.SplitDividerCorner
+            android:id="@+id/docked_divider_rounded_corner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
+</com.android.wm.shell.common.split.DividerView>

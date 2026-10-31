@@ -103,12 +103,16 @@ public class SplitCoordinator implements SplitScreen.SplitScreenListener {
             mExitOverlay.cancel();
             return;
         }
-        if (mSplitVisible && mMainTaskId != -1 && mSideTaskId != -1) {
+        RunningTaskInfo top = getTopTask();
+        // 不能只信 onSplitVisibilityChanged：分屏在后台时用 am start 等方式拉起全屏应用，
+        // WMShell 不一定回调 visible=false。再核对一次前台 task 是否属于分屏
+        final boolean topInSplit = top != null
+                && (top.taskId == mMainTaskId || top.taskId == mSideTaskId);
+        if (mSplitVisible && mMainTaskId != -1 && mSideTaskId != -1 && topInSplit) {
             showExitOverlay();
             return;
         }
 
-        RunningTaskInfo top = getTopTask();
         if (top == null || top.getActivityType() == ACTIVITY_TYPE_HOME) {
             toast("请先打开一个应用，再点击分屏");
             return;
