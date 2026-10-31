@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace = 'com.split.systemui'
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = 'com.split.systemui'
+        minSdk = 34
+        targetSdk = 34
+        versionCode = 1
+        versionName = '1.0'
+    }
+
+    // AOSP 测试平台签名（build/target/product/security/platform.*），
+    // 镜像也是用测试 key 编的，所以这个 APK 能拿到 signature 级权限并免除 hidden API 限制
+    signingConfigs {
+        platform {
+            storeFile = new File(rootProject.ext.aospDir, 'platform.p12')
+            storeType = 'pkcs12'
+            storePassword = 'android'
+            keyAlias = 'platform'
+            keyPassword = 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig = signingConfigs.platform
+        }
+        release {
+            signingConfig = signingConfigs.platform
+            minifyEnabled = false
+        }
+    }
+
+    androidResources {
+        // WMShell 的资源引用了 @*android: 私有资源，链接时加上完整的 framework-res
+        additionalParameters.addAll(['-I', rootProject.ext.frameworkResApk.absolutePath])
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/*.kotlin_module', 'META-INF/versions/**', 'kotlin/**']
+        }
+    }
+}
+
+dependencies {
+    implementation project(':wmshell')
+    compileOnly files(rootProject.ext.frameworkJar)
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.51.1'
+}

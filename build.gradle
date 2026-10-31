@@ -1,0 +1,26 @@
+plugins {
+    id 'com.android.application' version '9.0.0' apply false
+    id 'com.android.library' version '9.0.0' apply false
+}
+
+// 从 AOSP 编译产物里取出来的文件，统一放在 aosp/ 下
+ext {
+    aospDir = file("$rootDir/aosp")
+    // 带 @hide API 的 framework 类，只参与编译，不打进 APK
+    frameworkJar = file("$rootDir/aosp/framework.jar")
+    // framework-res，WMShell 的资源里引用了 @*android: 私有资源，aapt2 链接时要用它
+    frameworkResApk = file("$rootDir/aosp/framework-res.apk")
+}
+
+// 让 framework.jar 排在 SDK android.jar 前面，这样才能调用 @hide API
+subprojects {
+    tasks.withType(JavaCompile).configureEach {
+        doFirst {
+            def fw = files(rootProject.ext.frameworkJar)
+            if (options.bootstrapClasspath != null) {
+                options.bootstrapClasspath = fw + options.bootstrapClasspath
+            }
+            classpath = fw + classpath
+        }
+    }
+}

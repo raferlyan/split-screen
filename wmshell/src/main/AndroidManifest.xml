@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 和 frameworks/base/libs/WindowManager/Shell/AndroidManifest.xml 一致 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.CAPTURE_BLACKOUT_CONTENT" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.ROTATE_SURFACE_FLINGER" />
+    <uses-permission android:name="android.permission.WAKEUP_SURFACE_FLINGER" />
+    <uses-permission android:name="android.permission.READ_FRAME_BUFFER" />
+</manifest>

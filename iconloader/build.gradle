@@ -1,0 +1,21 @@
+// iconloader_base 的资源（frameworks/libs/systemui/iconloaderlib/res）。
+// 它的类已经合并在 wmshell-classes.jar 里，这里只为了生成 com.android.launcher3.icons.R
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace = 'com.android.launcher3.icons'
+    compileSdk = 34
+
+    defaultConfig {
+        minSdk = 34
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            res.srcDirs = [new File(rootProject.ext.aospDir, 'iconloader-res')]
+        }
+    }
+}

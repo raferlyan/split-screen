@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      覆盖 WMShell 自带的配置（frameworks/base/libs/WindowManager/Shell/res/values/config.xml）。
+      true：WMShell 跑在独立的 wmshell.main 线程（THREAD_PRIORITY_DISPLAY），不和本进程 UI 线程抢。
+      AOSP 默认是 false，由各设备 overlay 打开；自研 SystemUI 很容易漏掉这一项。
+    -->
+    <bool name="config_enableShellMainThread">true</bool>
+
+    <dimen name="nav_bar_height">48dp</dimen>
+    <dimen name="nav_button_width">96dp</dimen>
+    <dimen name="picker_width">320dp</dimen>
+    <dimen name="card_gap">32dp</dimen>
+    <dimen name="card_radius">16dp</dimen>
+
+    <color name="exit_scrim">#B3000000</color>
+    <color name="picker_scrim">#66000000</color>
+    <color name="picker_bg">#F2202124</color>
+
+    <style name="Theme.SplitSysUI" parent="@android:style/Theme.DeviceDefault.NoActionBar" />
+</resources>

@@ -1,0 +1,10 @@
+# Gradle / IDE
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# AOSP 产物（含平台签名私钥、framework.jar 等，用 scripts/fetch_from_server.sh 重新生成）
+aosp/

@@ -1,0 +1,52 @@
+// 把 AOSP 编出来的 WindowManager-Shell 包成一个 Gradle library：
+//   classes：aosp/wmshell-classes.jar（Soong 产物，已剔除 androidx / kotlin / dagger，这些走 Maven 依赖）
+//   res：    aosp/wmshell-res（frameworks/base/libs/WindowManager/Shell/res 原样拷贝）
+plugins {
+    id 'com.android.library'
+}
+
+// 版本号直接取 aosp/m2repository 里的那一个，保证和 AOSP 编 WMShell 时一致
+def aospVersion = { String group, String name ->
+    def dir = new File(rootProject.ext.aospDir, "m2repository/${group.replace('.', '/')}/${name}")
+    def versions = dir.listFiles()?.findAll { it.isDirectory() }*.name
+    if (!versions) throw new GradleException("aosp/m2repository 里没有 $group:$name，先跑 scripts/fetch_from_server.sh")
+    return versions.sort().last()
+}
+
+android {
+    namespace = 'com.android.wm.shell'
+    compileSdk = 34
+
+    defaultConfig {
+        minSdk = 34
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            res.srcDirs = [new File(rootProject.ext.aospDir, 'wmshell-res')]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    api files(new File(rootProject.ext.aospDir, 'wmshell-classes.jar'))
+    api project(':iconloader')
+
+    api "androidx.appcompat:appcompat:${aospVersion('androidx.appcompat', 'appcompat')}"
+    api "androidx.core:core-animation:${aospVersion('androidx.core', 'core-animation')}"
+    api "androidx.core:core-ktx:${aospVersion('androidx.core', 'core-ktx')}"
+    api "androidx.arch.core:core-runtime:${aospVersion('androidx.arch.core', 'core-runtime')}"
+    api "androidx.constraintlayout:constraintlayout:${aospVersion('androidx.constraintlayout', 'constraintlayout')}"
+    api "androidx.dynamicanimation:dynamicanimation:${aospVersion('androidx.dynamicanimation', 'dynamicanimation')}"
+    api "androidx.recyclerview:recyclerview:${aospVersion('androidx.recyclerview', 'recyclerview')}"
+
+    // AOSP external/kotlinx.coroutines 是 1.7.2。dagger 用 2.51.1：AOSP 自带的 2.47 读不了 WMShell 里 Kotlin 类的 metadata
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2'
+    api 'com.google.dagger:dagger:2.51.1'
+}

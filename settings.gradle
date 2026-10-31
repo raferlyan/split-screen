@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        // Maven Central 在当前网络下返回 403，用阿里云镜像
+        maven { url = uri('https://maven.aliyun.com/repository/gradle-plugin') }
+        maven { url = uri('https://maven.aliyun.com/repository/google') }
+        maven { url = uri('https://maven.aliyun.com/repository/public') }
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        // androidx 用 AOSP 源码树里的预编译版本（prebuilts/sdk/current/androidx/m2repository），
+        // 和编 WMShell 时用的版本完全一致，见 scripts/fetch_from_server.sh
+        maven { url = uri("$rootDir/aosp/m2repository") }
+        maven { url = uri('https://maven.aliyun.com/repository/google') }
+        maven { url = uri('https://maven.aliyun.com/repository/public') }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "SplitSystemUI"
+include ':iconloader'
+include ':wmshell'
+include ':app'
